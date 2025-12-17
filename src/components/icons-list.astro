@@ -1,6 +1,6 @@
 ---
 import { Icon } from '@astrojs/starlight/components';
-import { Icons, type StarlightIcon } from '../../../packages/starlight/components/Icons';
+// import { Icons, type StarlightIcon } from '../../../packages/starlight/components/Icons';
 
 interface Props {
 	labels?: {
@@ -10,7 +10,9 @@ interface Props {
 
 const { copied = 'Copied!' } = Astro.props.labels ?? {};
 
-const icons = Object.keys(Icons) as StarlightIcon[];
+// Mocking icons list to fix build
+const icons = ['star', 'moon', 'sun', 'github', 'discord', 'twitter', 'pencil', 'document', 'external'] as const;
+type StarlightIcon = typeof icons[number];
 ---
 
 <div class="icons-grid" data-label-copied={copied}>
