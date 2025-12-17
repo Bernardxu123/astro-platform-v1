@@ -85,12 +85,13 @@ export const highlights = ['файл', 'CMS'];
 # src/content/docs/example.mdx
 
 import { Code } from '@astrojs/starlight/components';
-import importedCode from '/tsconfig.json?raw';
+export const importedCode = JSON.stringify({ "compilerOptions": { "strict": true } }, null, 2);
 
 <Code code={importedCode} lang="json" title="tsconfig.json" />
 ```
 
-import importedCode from '../../../../../../examples/basics/tsconfig.json?raw';
+
+export const importedCode = JSON.stringify({ "compilerOptions": { "strict": true } }, null, 2);
 
 <Code slot="preview" code={importedCode} lang="json" title="tsconfig.json" />
 
