@@ -34,16 +34,17 @@ const site = NETLIFY_PREVIEW_SITE || 'https://starlight.astro.build/';
 const ogUrl = new URL('og.jpg?v=1', site).href;
 const ogImageAlt = 'Make your docs shine with Starlight';
 
-import cloudflare from '@astrojs/cloudflare';
+// import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-	adapter: cloudflare(),
+	output: 'static',
+	// adapter: cloudflare(),
 	site,
 	trailingSlash: 'always',
 	integrations: [
 		react(),
 		tailwind({ applyBaseStyles: false }),
-		keystatic(),
+		// keystatic(),
 		starlight({
 			title: 'Astro Platform',
 			logo: {
@@ -191,7 +192,10 @@ export default defineConfig({
 					autogenerate: { directory: 'resources' },
 				},
 			],
-			expressiveCode: { shiki: { langs: [markdocGrammar] } },
+			expressiveCode: {
+				langs: [markdocGrammar],
+			},
+
 			plugins: process.env.CHECK_LINKS
 				? [
 					starlightLinksValidator({

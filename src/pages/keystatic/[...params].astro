@@ -1,0 +1,14 @@
+---
+import { Keystatic } from '@keystatic/core/ui';
+import config from '../../../keystatic.config';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return [
+    { params: { params: undefined } }
+  ];
+}
+---
+
+<Keystatic config={config} client:only="react" />
