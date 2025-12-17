@@ -1,0 +1,83 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { getCollection } from "astro:content";
+
+const latestSoftware = await getCollection("software");
+const featuredSoftware = latestSoftware.slice(0, 3);
+---
+
+<Layout title="Astro Platform - 个人软件中心">
+    <!-- Hero Section -->
+    <section class="container flex flex-col items-center justify-center gap-4 py-24 text-center md:py-32">
+        <Badge variant="secondary" className="mb-4">v1.0 发布</Badge>
+        <h1 class="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            个人软件与<br/>内容中心
+        </h1>
+        <p class="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+            一个用于分享我的软件作品与技术思考的高性能无服务器平台。
+            基于 Astro, React 和 Shadcn UI 构建。
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+            <a href="/software">
+                <Button size="lg">探索软件</Button>
+            </a>
+            <a href="/blog/getting-started">
+                <Button variant="outline" size="lg">阅读文档</Button>
+            </a>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="container py-12 md:py-24 lg:py-32 bg-secondary/20 rounded-3xl">
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="flex flex-col gap-2">
+                <h3 class="text-xl font-bold">极致性能</h3>
+                <p class="text-muted-foreground">利用静态生成和边缘分发，目标是实现 Lighthouse 100/100 分数。</p>
+            </div>
+            <div class="flex flex-col gap-2">
+                <h3 class="text-xl font-bold">零维护</h3>
+                <p class="text-muted-foreground">由 Cloudflare Pages 和 R2 Storage 驱动的无服务器架构。</p>
+            </div>
+            <div class="flex flex-col gap-2">
+                <h3 class="text-xl font-bold">现代技术栈</h3>
+                <p class="text-muted-foreground">基于最新 Web 标准构建：React, TypeScript, 和 Tailwind CSS。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Software -->
+    <section class="container py-12 md:py-24 lg:py-32">
+        <div class="flex flex-col gap-8">
+            <div class="flex items-center justify-between">
+                <h2 class="text-3xl font-bold tracking-tight">最新软件</h2>
+                <a href="/software" class="text-primary hover:underline underline-offset-4">查看全部 &rarr;</a>
+            </div>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {featuredSoftware.map((software) => (
+                    <Card>
+                        <CardHeader>
+                            <div class="flex items-start justify-between">
+                                <CardTitle>{software.data.title}</CardTitle>
+                                <Badge variant="outline">v{software.data.version}</Badge>
+                            </div>
+                            <CardDescription>{software.data.category}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <p class="line-clamp-3 text-sm text-muted-foreground">
+                                {software.data.description}
+                            </p>
+                        </CardContent>
+                        <CardFooter>
+                            <a href={`/software/${software.id}`} class="w-full">
+                                <Button className="w-full" variant="secondary">查看详情</Button>
+                            </a>
+                        </CardFooter>
+                    </Card>
+                ))}
+            </div>
+        </div>
+    </section>
+</Layout>

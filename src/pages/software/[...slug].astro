@@ -1,0 +1,73 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator"; // Need to create this or use hr
+
+export async function getStaticPaths() {
+	const softwareEntries = await getCollection("software");
+	return softwareEntries.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={`${entry.data.title} - 软件详情`}>
+    <div class="container py-10 md:py-16 lg:py-20">
+        <div class="grid gap-10 lg:grid-cols-[1fr_300px]">
+            <!-- Main Content -->
+            <div class="space-y-8">
+                <!-- Header -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <h1 class="text-4xl font-extrabold tracking-tight lg:text-5xl">{entry.data.title}</h1>
+                        <Badge variant="secondary" className="text-lg px-3 py-1">v{entry.data.version}</Badge>
+                    </div>
+                    <p class="text-xl text-muted-foreground">{entry.data.description}</p>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="flex flex-wrap gap-4">
+                    {entry.data.downloadUrl && (
+                        <a href={entry.data.downloadUrl} target="_blank" rel="noopener noreferrer">
+                            <Button size="lg">立即下载</Button>
+                        </a>
+                    )}
+                </div>
+
+                <div class="border-t my-8"></div>
+
+                <!-- MDX Content -->
+                <article class="prose prose-stone dark:prose-invert max-w-none">
+                    <Content />
+                </article>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                    <h3 class="font-semibold mb-4">软件信息</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-muted-foreground">版本</span>
+                            <span class="font-medium">{entry.data.version}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-muted-foreground">分类</span>
+                            <span class="font-medium capitalize">{entry.data.category}</span>
+                        </div>
+                         <div class="flex justify-between">
+                            <span class="text-muted-foreground">许可协议</span>
+                            <span class="font-medium">Free</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
